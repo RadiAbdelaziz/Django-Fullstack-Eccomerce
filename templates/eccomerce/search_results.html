@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Search Results for "{{ query }}"</h2>
+  <div class="row">
+    {% for product in results %}
+      <div class="col-md-3">
+        <div class="card mb-4">
+          <img src="{{ product.image.url }}" class="card-img-top">
+          <div class="card-body">
+            <a href="{% url 'product_detail' product.id %}"><h5>{{ product.title }}</h5></a>
+            <p>${{ product.price }}</p>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>No products found.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load form_tags %}
+<div class="container mt-5">
+
+  <!-- Product Title -->
+  <h1 class="mb-4">{{ product.title }}</h1>
+
+  <div class="row">
+    <!-- Images -->
+    <div class="col-md-6">
+      {% if product.images.all %}
+        <div class="carousel slide" id="productCarousel" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            {% for img in product.images.all %}
+              <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <img src="{{ img.image.url }}" class="d-block w-100 product-image" alt="Product Image">
+              </div>
+            {% endfor %}
+          </div>
+          
+        </div>
+      {% else %}
+        <p>No images available.</p>
+      {% endif %}
+    </div>
+
+    <!-- Product Info -->
+    <div class="col-md-6">
+      <h3 class="text-success">${{ product.price }}</h3>
+      {% if product.discount %}
+        <p class="text-danger">Discount: {{ product.discount }}%</p>
+      {% endif %}
+      <p><strong>Brand:</strong> {{ product.brand }}</p>
+      <p><strong>Category:</strong> {{ product.category }}</p>
+      <p>{{ product.description }}</p>
+
+      {% if product.tags.all %}
+        <p>
+          <strong>Tags:</strong>
+          {% for tag in product.tags.all %}
+            <span class="badge bg-secondary">{{ tag.name }}</span>
+            {% endfor %}
+          </p>
+          {% endif %}
+          <p class="text-success">{{product.rating}} ⭐️⭐️⭐️⭐️⭐️</p>
+
+      <!-- زر Add to Cart url  -->
+      <a href="{% url 'add_to_cart' product.id  %}" class="btn btn-primary mt-3"><i class="bi bi-cart-plus"></i>Add to Cart</a>
+       {% if user == product.seller %}
+    <div class="mt-3">
+      <a href="{% url 'update_product' product.pk %}" class="btn btn-warning"><i class="bi bi-pencil"></i> Edit Product</a>
+      <a href="{% url 'delete_product' product.pk %}" class="btn btn-danger"><i class="bi bi-trash"></i> Delete Product</a>
+    </div>
+  {% endif %}
+    </div>
+  </div>
+
+  <!-- Reviews -->
+  <div class="mt-5">
+    <h4>Reviews</h4>
+    {% if product.reviews.all %}
+      {% for review in product.reviews.all %}
+        <div class="card mb-2">
+          <div class="card-body">
+            <strong>{{ review.user.username }}</strong>
+            <span class="text-warning">★ {{ review.rating }}/5</span>
+            <p>{{ review.comment }}</p>
+            <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No reviews yet.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

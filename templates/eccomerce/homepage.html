@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  img {
+    width: 300px;
+    height: 300px;
+  }
+</style>
+
+<div class="container mt-4">
+
+  <!--Search Bar -->
+  <form action="{% url 'product_search' %}" method="get" class="mb-4">
+    <input type="text" name="q" class="form-control" placeholder="Search products...">
+  </form>
+
+  <!--  Featured Slider -->
+  <div id="featuredCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      {% for product in featured_products %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <img src="{{ product.images.first.image.url  }}" class="d-block w-100" style="height: 400px;" alt="{{ product.title }}">
+          <div class="carousel-caption d-none d-md-block">
+            <h5>{{ product.title }}</h5>
+            <p>${{ product.price }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#featuredCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#featuredCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+
+ <h3 class="my-4">Featured Categories</h3>
+<div class="row">
+  {% for category in featured_categories %}
+    <div class="col-md-3">
+      <div class="card category-card text-center shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">{{ category}}</h5>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+  <!-- Latest Products -->
+  <h3>Latest Products</h3>
+  <div class="row">
+    {% for product in latest_products %}
+      <div class="col-md-3">
+        <div class="card mb-4">
+          <img src="{{ product.images.first.image.url }}" class="card-img-top" style="width: 250px; height: 250px;">
+          <div class="card-body">
+            <p>{{ product.title }}</p>
+            <p>${{ product.price }}</p>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Best Sellers -->
+  <h3>Best Sellers</h3>
+  <div class="row">
+    {% for product in best_sellers %}
+      <div class="col-md-3">
+        <div class="card mb-4">
+          <img src="{{ product.images.first.image.url }}" class="card-img-top">
+          <div class="card-body">
+            <a href="{% url 'product_detail' product.pk %}" style="text-decoration: none;"><h5>{{ product.title }}</h5></a>
+            <p>${{ product.price }}</p>
+            <p>Rating: {{ product.rating }}</p>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
