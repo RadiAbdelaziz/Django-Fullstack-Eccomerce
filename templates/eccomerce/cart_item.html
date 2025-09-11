@@ -5,13 +5,13 @@
 
    
 {% if cart and cart.items.all %}    
-<div class="container text-center my-3 mx-auto border shadow w-50">
+<div class="container text-center my-3 mx-auto border shadow w-70">
     <div class="box">
        
          {% for item in cart.items.all %}
-         <form method="POST" action="{% url 'update_cart' item.id %}" style="max-width: 80px;">
+         <form method="POST" action="{% url 'update_cart' item.id %}" >
             {% csrf_token %}
-            quantity<input type="number" name="quantity" value="{{ item.quantity }}" min="1" />
+            quantity<input type="number" name="quantity" value="{{ item.quantity }}" min="1" style="max-width: 80px;"/>
             <button type="submit" class="btn btn-primary mb-2">Update</button>
         </form>
         
@@ -25,7 +25,7 @@
         </form>
     </div>
         {% endfor %}
-        <a href="{% url 'checkout' %}" class="btn btn-primary mt-3 fs-6">Proceed to Checkout</a>
+        <a href="{% url 'checkout' %}" class="btn btn-primary">Proceed to Checkout</a>
         {% else %}
     <div class="container text-center ">
         <img src="{% static 'images/cart.webp' %}" alt="">
