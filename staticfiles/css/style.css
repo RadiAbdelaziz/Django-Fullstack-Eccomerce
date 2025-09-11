@@ -1,0 +1,61 @@
+body {
+    font-family: "Cairo", sans-serif;
+}
+:root {
+    --first-color :#9112BC;
+    --second-color:#AE75DA;
+    --third-color :#E9E294;
+    --forth-color :#FFFCB8;
+    --white-color :#fff;
+}
+.navbar {
+    background-color: var(--first-color)!important;
+    color: var(--white-color) !important;
+}
+.navbar-brand:hover,
+.dropdown-item:hover, 
+.navbar .nav-link:hover {
+    border: 2px solid var(--third-color) ;
+    color: var(--third-color);
+    border-radius: 12px;
+}
+.navbar-brand {
+    padding: 10px;
+}
+.navbar .nav-link {
+    padding: 5px;
+}
+.navbar-brand, 
+.navbar .nav-link {
+    color: var(--white-color) !important;
+}
+.form-style {
+    padding: 10px;
+    margin: 10px;
+    font-size: 12px;
+}
+button {
+    background-color: var(--second-color) !important;
+    margin-top: 5px !important;
+}
+.btn {
+    background-color: var(--forth-color) !important;
+    color: black !important;
+    border: none !important;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.product-animate {
+  animation: fadeInUp 0.8s ease-out forwards !important;
+  opacity: 0 !important;
+}
