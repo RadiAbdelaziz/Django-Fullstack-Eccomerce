@@ -23,8 +23,8 @@
         <div class="carousel-item {% if forloop.first %}active{% endif %}">
           <img src="{{ product.images.first.image.url  }}" class="d-block w-100" style="height: 400px;" alt="{{ product.title }}">
           <div class="carousel-caption d-none d-md-block">
-            <h5>{{ product.title }}</h5>
-            <p>${{ product.price }}</p>
+            <h5 class="card-title">{{ product.title }}</h5>
+            <p class="card-text">${{ product.price }}</p>
           </div>
         </div>
       {% endfor %}

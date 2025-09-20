@@ -22,7 +22,7 @@
 
 <div class="container">
   <h1 class="mb-4">Products</h1>
-{% if user.is_authenticated %}
+{% if user.is_authenticated and user.role == 'seller' %}
   <a href="{% url 'create_product' %}" class="btn btn-primary mb-3 mt-3">➕ Create Product</a>
 {% endif %}
 

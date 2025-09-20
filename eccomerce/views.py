@@ -6,9 +6,11 @@ from .models import Product, Category, Brand, Tag , Cart , CartItem, Product , O
 from .forms import ProductForm
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 # View to list all products (with search/filter)
 def product_list(request):
     products = Product.objects.all()
+    categories = Category.objects.all()
     query = request.GET.get('q')
     category_id = request.GET.get('category')
 
@@ -18,7 +20,7 @@ def product_list(request):
     if category_id:
         products = products.filter(category__id=category_id)
 
-    return render(request, 'eccomerce/product_list.html', {'products': products})
+    return render(request, 'eccomerce/product_list.html', {'products': products , 'categories': categories })
 
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
@@ -192,3 +194,23 @@ def product_search(request):
     ).distinct()
     
     return render(request, 'eccomerce/search_results.html', {'results': results, 'query': query})
+
+
+
+@staff_member_required
+def admin_dashboard(request):
+    total_products = Product.objects.count()
+    approved_products = Product.objects.filter(is_approved=True).count()
+    featured_products = Product.objects.filter(is_featured=True).count()
+    total_orders = Order.objects.count()
+    pending_orders = Order.objects.filter(status='Pending').count()
+    
+    context = {
+        'total_products': total_products,
+        'approved_products': approved_products,
+        'featured_products': featured_products,
+        'total_orders': total_orders,
+        'pending_orders': pending_orders,
+    }
+    
+    return render(request, 'eccomerce/admin_dashboard.html', context)

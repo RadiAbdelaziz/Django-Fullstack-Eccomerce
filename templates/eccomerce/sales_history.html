@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h1>Sales History</h1>
+
+  {% if order_items %}
+    <table class="table table-striped mt-4">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Price per Item</th>
+          <th>Total</th>
+          <th>Order Status</th>
+          <th>Order Date</th>
+          <th>Update Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in order_items %}
+          <tr>
+            <td>{{ item.order.id }}</td>
+            <td>{{ item.product.title }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>${{ item.price }}</td>
+            <td>${{ item.price|floatformat:2|floatformat|add:"0"|floatformat:"2"|floatformat|floatformat }}</td>
+            <td>{{ item.order.status }}</td>
+            <td>{{ item.order.created_at|date:"M d, Y" }}</td>
+            <td>
+              <a href="{% url 'update_order_status' item.order.id %}" class="btn btn-sm btn-warning">Update</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No sales found.</p>
+  {% endif %}
+</div>
+{% endblock %}

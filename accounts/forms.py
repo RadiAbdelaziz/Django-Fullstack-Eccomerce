@@ -13,7 +13,7 @@ class RegistrationForm(UserCreationForm):
         model = CustomUser
         fields = [
             'email', 'username', 'first_name', 'last_name',
-            'mobile', 'profile_picture', 'password1', 'password2'
+            'mobile', 'profile_picture', 'role' ,'password1', 'password2'
         ]
 
 

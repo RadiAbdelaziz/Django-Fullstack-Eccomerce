@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h1>My Orders</h1>
+
+  {% if orders %}
+    <table class="table table-hover mt-4">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Address</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+          <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.created_at|date:"M d, Y" }}</td>
+            <td>{{ order.status }}</td>
+            <td><pre>{{ order.address }}</pre></td>
+            <td>
+              <button class="btn btn-sm btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#details-{{ order.id }}" aria-expanded="false" aria-controls="details-{{ order.id }}">
+                View Items
+              </button>
+              <div class="collapse mt-2" id="details-{{ order.id }}">
+                <ul class="list-group">
+                  {% for item in order.items.all %}
+                    <li class="list-group-item">{{ item.product.title }} - Qty: {{ item.quantity }} - ${{ item.price }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>You have no past orders.</p>
+    <a href="{% url 'product_list' %}" class="btn btn-primary">Shop Now</a>
+  {% endif %}
+</div>
+{% endblock %}

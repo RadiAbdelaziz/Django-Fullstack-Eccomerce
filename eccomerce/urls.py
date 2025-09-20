@@ -17,6 +17,7 @@ urlpatterns = [
     path('order/update-status/<int:order_id>/', views.update_order_status, name='update_order_status'),
     path('', views.homepage, name='homepage'),
     path('search/', views.product_search, name='product_search'),
+    path('dashboard/', views.admin_dashboard, name='admin_dashboard')
 
 
 ]

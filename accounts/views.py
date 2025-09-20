@@ -33,6 +33,8 @@ def register_view(request):
                 'domain': current_site.domain,
                 'uidb64': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': default_token_generator.make_token(user),             })
+            print("=== Email message to send ===")
+            print(message) 
             user.email_user(subject, message)
            
             return HttpResponse('Check your email to activate your account.')
@@ -58,6 +60,8 @@ def login_view(request):
     return render(request, 'accounts/login.html', {'form': form})
 
 
+from django.contrib import messages
+from django.shortcuts import redirect
 
 def activate_account(request, uidb64, token):
     User = get_user_model()
@@ -68,11 +72,17 @@ def activate_account(request, uidb64, token):
         user = None
 
     if user is not None and default_token_generator.check_token(user, token):
-        user.is_active = True
-        user.save()
-        return HttpResponse('Your account has been activated. You can now <a href="/accounts/login/">login</a>.')
+        if not user.is_active:
+            user.is_active = True
+            user.is_email_verified = True  # إذا تستخدم هذا الحقل
+            user.save()
+            # messages.success(request, 'تم تفعيل حسابك بنجاح! يمكنك الآن تسجيل الدخول.')
+        # else:
+            # messages.info(request, 'حسابك مفعل مسبقًا.')
+        return redirect('login')  # استبدل 'login' باسم رابط تسجيل الدخول في urls.py
     else:
-        return HttpResponse('Activation link is invalid!')
+        # messages.error(request, 'رابط التفعيل غير صالح أو انتهت صلاحيته.')
+        return redirect('register')  # استبدل 'register' برابط صفحة التسجيل أو صفحة الخطأ
 
 @login_required
 def profile_view(request):
